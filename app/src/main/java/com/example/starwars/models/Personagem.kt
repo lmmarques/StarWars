@@ -29,7 +29,7 @@ class Personagem {
     var vehicles: Array<String>? = null
 
 
-    var vehiclesSize: Int? = null
+    var vehiclesSize: String? = null
 
     @SerializedName("url")
     var url: String? = null
@@ -63,7 +63,7 @@ class Personagem {
 
     }
 
-    constructor(name: String?, species: String?, vehicles: Int?) {
+    constructor(name: String?, species: String?, vehicles: String?) {
         this.vehiclesSize = vehicles
         this.speciesURL = species
         this.name = name

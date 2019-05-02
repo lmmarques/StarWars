@@ -7,6 +7,7 @@ import com.example.starwars.adapters.PersonagensAdapter
 import com.example.starwars.models.Personagem
 import com.example.starwars.services.RestService
 import com.example.starwars.utils.dynamicHeigthListView
+import com.example.starwars.utils.loading
 import kotlinx.android.synthetic.main.activity_star_wars_people.*
 import java.net.MalformedURLException
 import java.net.URL
@@ -19,16 +20,13 @@ class StarWarsPeopleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_star_wars_people)
 
-        getPersonagensService()
-        getSpeciePersonagensService()
-
+         getPersonagensService()
+        //loading().showLoading(this,::getPersonagensService)
         buttonBackPersonagens.setOnClickListener {
             super.onBackPressed()
         }
 
-        val searchResults = getPersonagens()
-        listaPersonagens.adapter = PersonagensAdapter(this, searchResults)
-        dynamicHeigthListView().setListViewHeightBasedOnChildren(listaPersonagens, this)
+
     }
 
     override fun onBackPressed() {
@@ -46,6 +44,9 @@ class StarWarsPeopleActivity : AppCompatActivity() {
         val task = RestService.AsyncCallWS()
         try {
             task.execute(URL(urlService)).get()
+            val searchResults = getPersonagens()
+            listaPersonagens.adapter = PersonagensAdapter(this, searchResults)
+            dynamicHeigthListView().setListViewHeightBasedOnChildren(listaPersonagens, this)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         } catch (e: ExecutionException) {
@@ -57,33 +58,6 @@ class StarWarsPeopleActivity : AppCompatActivity() {
 
     }
 
-    //Obtem o as espécie de cada personagem
-    private fun getSpeciePersonagensService() {
-        for (entry in Personagem.dadosPersonagem.entries) {
-            val value = entry.value as Array<*>
-            val urlService= value[1] as String
-
-            //remove o ultimo caracter
-            val urlFinal = urlService.substring(0, urlService.length-1)
-
-
-
-
-
-        val task = RestService.AsyncCallWS()
-        try {
-            task.execute(URL(urlFinal)).get()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        } catch (e: ExecutionException) {
-            e.printStackTrace()
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-        }
-        }
-
-
-    }
 
     //-----------------------------------------
     //
@@ -100,8 +74,9 @@ class StarWarsPeopleActivity : AppCompatActivity() {
                 val personagens = Personagem()
 
                 personagens.name = value[0] as String
-                personagens.speciesURL = value[1] as String
-                personagens.vehiclesSize = value[2] as Int
+                personagens.speciesURL ="Espécie: "+ value[1] as String
+
+                personagens.vehiclesSize = "Nr. Veículos: " + value[2] as String
 
                 results.add(personagens)
             }
