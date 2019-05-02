@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white" tools:ignore="MissingDefaultResource">#FFFFFF</color>
+    <color name="gray">#808080</color>
+    <color name="blue">#0000FF</color>
+    <color name="black">#000000</color>
+    <color name="ColorBackground">#6c9f9c9c</color>
+    <color name="ColorBackgroundButton">#d39f9c9c</color>
+    <color name="ColorBackgroundOpacity">#eaf9f6f6</color>
+    <color name="ColorToolbarOpacity">#f5f9f6f6</color>
+    <color name="ButtonDisable">#b3605d5d</color>
+    <color name="ButtonTextDisable">#c3f9f6f6</color>
+    <color name="ButtonMain">#30f9f6f6</color>
+    <color name="transparente">#00000000</color>
+</resources>
