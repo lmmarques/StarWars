@@ -26,7 +26,7 @@ class Personagem {
     var mass: String? = null
 
     @SerializedName("vehicles")
-    var vehicles: Array<String>? = null
+    var vehicles: ArrayList<String>? = null
 
 
     var vehiclesSize: String? = null
@@ -63,12 +63,17 @@ class Personagem {
 
     }
 
-    constructor(name: String?, species: String?, vehicles: String?) {
-        this.vehiclesSize = vehicles
+    constructor(name: String?, species: String?, vehicles:  ArrayList<String>?, genero: String?, planeta: String?, corPele: String?) {
+        this.vehicles = vehicles
         this.speciesURL = species
         this.name = name
-        dadosPersonagem[name!!] = arrayOf(name, species, vehiclesSize)
+        this.skin_color=corPele
+        this.homeworld=planeta
+        this.gender=genero
+        dadosPersonagem[name!!] = arrayOf(name, species, vehicles, genero,planeta,corPele)
     }
+
+
 
     constructor()
 

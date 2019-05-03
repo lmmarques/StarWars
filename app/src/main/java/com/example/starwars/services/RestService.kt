@@ -19,6 +19,7 @@ class RestService {
     private var responseVeiculo: Veiculo? = null
 
 
+
     private fun loadJSON(url: URL?) =
         try {
 
@@ -31,9 +32,7 @@ class RestService {
                 responsePersonagem = responseListaPersonagens!!.results!![i]
                 val nome = responsePersonagem!!.name
                 val genero = responsePersonagem!!.gender
-
                 val corPele = responsePersonagem!!.skin_color
-
                 val planetaNatal = responsePersonagem!!.homeworld
                 //remove o ultimo caracter do URL ("/")
                 val urlFinalPlaneta = URL(planetaNatal!!.substring(0, planetaNatal.length - 1))
@@ -46,24 +45,25 @@ class RestService {
                 //obtem o numero de veiculos
 
                 val numeroVeiculos = responsePersonagem!!.vehicles!!.size
-                var listaVeiculos: String? = null
+                var veiculos: String?
 
-
+                val listaVeiculos = ArrayList<String>()
                 for (j in 0 until numeroVeiculos) {
-                    listaVeiculos = responsePersonagem!!.vehicles!![j]
-                    val urlFinalVeiculo = URL(listaVeiculos.substring(0, listaVeiculos.length - 1))
+                    veiculos = responsePersonagem!!.vehicles!![j]
+                    val urlFinalVeiculo = URL(veiculos.substring(0, veiculos.length - 1))
 
                     //chama o serviço de especie
                     responseVeiculo = gson!!.fromJson<Veiculo>(connection(urlFinalVeiculo), Veiculo::class.java)
                     val nomeVeiculo = responseVeiculo!!.name
+
+                    listaVeiculos.add(nomeVeiculo!!)
+
                     Log.d("REST", "nomeVeiculo: $nomeVeiculo")
-                    Log.d("REST", "listaVeiculos: $listaVeiculos")
+                    Log.d("REST", "listaVeiculos: $veiculos")
                 }
 
                 var speciesURL: String? = null
                 var especie: String? = null
-
-
 
                 //obtem as especies
                 for (e in 0 until responsePersonagem!!.species!!.size) {
@@ -88,7 +88,7 @@ class RestService {
                 Log.d("REST", "genero: $genero")
 
                 //Adiciona ao objeto os dados
-                Personagem(nome, especie, numeroVeiculos.toString())
+                Personagem(nome, especie, listaVeiculos,genero,planeta,corPele)
             }
 
 
@@ -98,10 +98,9 @@ class RestService {
 
 
     //protocolo de ligação
-    fun connection(url: URL?): BufferedReader? {
-        val connection: HttpURLConnection
+   private fun connection(url: URL?): BufferedReader? {
+        val connection: HttpURLConnection = url?.openConnection() as HttpURLConnection
 
-        connection = url?.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
         connection.doOutput = true
         /* connection.connectTimeout = 30000
